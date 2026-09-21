@@ -1,4 +1,4 @@
-[[# EXPERIMENT-05-SOIL-MOISTURE-SENSOR-INTERFACE-TO-IOT-DEVELOPMENT-BOARD
+# EXPERIMENT-05-SOIL-MOISTURE-SENSOR-INTERFACE-TO-IOT-DEVELOPMENT-BOARD
 
 ## Aim: 
 
@@ -108,15 +108,74 @@ GND is the ground pin.
 
 ## STM 32 CUBE PROGRAM :
 
+```
 
+#include "main.h"
+#include <stdio.h>
+
+ADC_HandleTypeDef hadc;
+UART_HandleTypeDef huart2;
+
+uint16_t readvalue;
+
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_ADC_Init(void);
+static void MX_USART2_UART_Init(void);
+
+int __io_putchar(int ch)
+{
+    HAL_UART_Transmit(
+        &huart2,
+        (uint8_t *)&ch,
+        1,
+        HAL_MAX_DELAY
+    );
+
+    return ch;
+}
+
+int main(void)
+{
+    HAL_Init();
+
+    SystemClock_Config();
+
+    MX_GPIO_Init();
+
+    MX_ADC_Init();
+
+    MX_USART2_UART_Init();
+
+    while (1)
+    {
+        HAL_ADC_Start(&hadc);
+
+        HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+
+        readvalue = HAL_ADC_GetValue(&hadc);
+
+        printf("Read Analog value : %u\r\n",
+               (unsigned int)readvalue);
+
+        HAL_ADC_Stop(&hadc);
+
+        HAL_Delay(1000);
+    }
+}
+
+```
 
 ## Output screen shots on serial monitor   :
- 
+
+
+<img width="1450" height="896" alt="image" src="https://github.com/user-attachments/assets/a5da8e3a-8d07-42e9-9a95-6e5f69df8f9a" />
+
+<img width="1021" height="558" alt="image" src="https://github.com/user-attachments/assets/9b3002a5-31ea-4ef6-a5d0-66de53efb98f" />
+
  
  
  
 ## Result :
 Interfacing a Analog Input (soil moisture sensor) with ARM microcontroller based IOT development is executed and the results visualized on serial monitor 
 
-](https://github.com/Iyalarasu1/EXPERIMENT-05-SOIL-MOISTURE-SENSOR-INTERFACE-TO-IOT-DEVELOPMENT-BOARD.git)
-](https://github.com/Iyalarasu1/EXPERIMENT-05-SOIL-MOISTURE-SENSOR-INTERFACE-TO-IOT-DEVELOPMENT-BOARD.git)
